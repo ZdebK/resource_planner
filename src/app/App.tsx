@@ -1,0 +1,163 @@
+import { useState, useMemo } from 'react';
+import { TopNav } from './components/TopNav';
+import { Sidebar } from './components/Sidebar';
+import { ResourceGrid } from './components/ResourceGrid';
+import { AllocationPanel } from './components/AllocationPanel';
+import { AdvancedFilters, AdvancedFilter } from './components/AdvancedFilters';
+import { mockResources } from './components/mockResources';
+import { Resource } from './Type';
+
+export default function App() {
+  const [selectedTypes, setSelectedTypes] = useState<string[]>(['all']);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [selectedResourceIds, setSelectedResourceIds] = useState<string[]>([]);
+  const [advancedFilters, setAdvancedFilters] = useState<AdvancedFilter[]>([]);
+
+  const handleTypeToggle = (type: string) => {
+    if (type === 'all') {
+      setSelectedTypes(['all']);
+    } else {
+      const newTypes = selectedTypes.filter(t => t !== 'all');
+      if (newTypes.includes(type)) {
+        const filtered = newTypes.filter(t => t !== type);
+        setSelectedTypes(filtered.length === 0 ? ['all'] : filtered);
+      } else {
+        setSelectedTypes([...newTypes, type]);
+      }
+    }
+  };
+
+  const handleSelectResource = (id: string) => {
+    setSelectedResourceIds(prev =>
+      prev.includes(id) ? prev.filter(rid => rid !== id) : [...prev, id]
+    );
+  };
+
+  const handleRemoveResource = (id: string) => {
+    setSelectedResourceIds(prev => prev.filter(rid => rid !== id));
+  };
+
+  const handleClearAll = () => {
+    setSelectedResourceIds([]);
+  };
+
+  // Advanced filtering logic with AND/OR support
+  const applyAdvancedFilters = (resources: Resource[]) => {
+    if (advancedFilters.length === 0) return resources;
+
+    return resources.filter((resource: Resource) => {
+      // Group filters by logic operator
+      const andFilters = advancedFilters.filter(f => f.logic === 'AND');
+      const orFilters = advancedFilters.filter(f => f.logic === 'OR');
+
+      // If first filter is OR, treat all as OR
+      if (advancedFilters[0].logic === 'OR') {
+        return advancedFilters.some(filter => matchesFilter(resource, filter));
+      }
+
+      // Check AND filters (all must match)
+      const andMatch = andFilters.length === 0 || andFilters.every(filter => matchesFilter(resource, filter));
+      
+      // Check OR filters (at least one must match, if any exist)
+      const orMatch = orFilters.length === 0 || orFilters.some(filter => matchesFilter(resource, filter));
+
+      return andMatch && orMatch;
+    });
+  };
+
+  const matchesFilter = (resource: Resource, filter: AdvancedFilter): boolean => {
+    if (filter.type === 'machine') {
+      // Check if this resource is compatible with the filtered machine
+      return resource.compatibleMachineIds?.includes(filter.resourceId) || false;
+    } else if (filter.type === 'device') {
+      // Check if this resource is compatible with the filtered device
+      return resource.compatibleDeviceIds?.includes(filter.resourceId) || false;
+    } else if (filter.type === 'employee') {
+      // Check if this resource is compatible with the filtered employee
+      return resource.compatibleEmployeeIds?.includes(filter.resourceId) || false;
+    }
+    return false;
+  };
+
+  const filteredResources = useMemo(() => {
+    let filtered = mockResources;
+
+    // Type filter
+    filtered = filtered.filter((resource: Resource) => {
+      return selectedTypes.includes('all') || selectedTypes.includes(resource.type);
+    });
+
+    // Search filter
+    filtered = filtered.filter((resource: Resource) => {
+      if (searchQuery === '') return true;
+      const query = searchQuery.toLowerCase();
+      return (
+        resource.name.toLowerCase().includes(query) ||
+        resource.department?.toLowerCase().includes(query) ||
+        resource.location?.toLowerCase().includes(query) ||
+        resource.skills?.some(skill => skill.toLowerCase().includes(query))
+      );
+    });
+
+    // Advanced filters
+    filtered = applyAdvancedFilters(filtered);
+
+    return filtered;
+  }, [selectedTypes, searchQuery, advancedFilters]);
+
+  const selectedResources = useMemo(() => {
+    return mockResources.filter(r => selectedResourceIds.includes(r.id));
+  }, [selectedResourceIds]);
+
+  const currentResourceType = selectedTypes.includes('all') ? 'all' : selectedTypes[0] || 'all';
+
+  return (
+    <div className="h-screen flex flex-col bg-background">
+      <TopNav />
+      
+      <div className="flex-1 flex overflow-hidden">
+        <Sidebar
+          selectedTypes={selectedTypes}
+          onTypeToggle={handleTypeToggle}
+          searchQuery={searchQuery}
+          onSearchChange={setSearchQuery}
+          advancedFilters={
+            <AdvancedFilters
+              resources={mockResources}
+              filters={advancedFilters}
+              onFiltersChange={setAdvancedFilters}
+              currentResourceType={currentResourceType}
+            />
+          }
+        />
+        
+        <main className="flex-1 overflow-y-auto p-8">
+          <div className="max-w-7xl mx-auto">
+            <div className="mb-6">
+              <h1 className="text-[var(--navy)] mb-2">Available Resources</h1>
+              <p className="text-muted-foreground text-sm">
+                Select resources to build your allocation set
+                {filteredResources.length > 0 && (
+                  <span className="ml-2">• Showing {filteredResources.length} resource{filteredResources.length !== 1 ? 's' : ''}</span>
+                )}
+              </p>
+            </div>
+            
+            <ResourceGrid
+              resources={filteredResources}
+              selectedResources={selectedResourceIds}
+              onSelectResource={handleSelectResource}
+              allResources={mockResources}
+            />
+          </div>
+        </main>
+        
+        <AllocationPanel
+          selectedResources={selectedResources}
+          onRemoveResource={handleRemoveResource}
+          onClearAll={handleClearAll}
+        />
+      </div>
+    </div>
+  );
+}

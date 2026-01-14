@@ -1,0 +1,44 @@
+import { Resource } from '../Type';
+
+export const mockResources: Resource[] = [
+  // Employees
+  { id: 'e1', name: 'Sarah Johnson', type: 'employee', status: 'available', department: 'Engineering', skills: ['CNC Operation', 'CAD/CAM'], location: 'Building A', initialCost: 15000, monthlyCost: 6500, compatibleMachineIds: ['m1', 'm6', 'm13'], compatibleDeviceIds: ['d1', 'd3', 'd7'] },
+  { id: 'e2', name: 'Michael Chen', type: 'employee', status: 'available', department: 'Design', skills: ['3D Modeling', 'Prototyping'], location: 'Building B', initialCost: 12000, monthlyCost: 5800, compatibleMachineIds: ['m2', 'm7'], compatibleDeviceIds: ['d2', 'd10'] },
+  { id: 'e3', name: 'Emily Rodriguez', type: 'employee', status: 'in-use', department: 'Engineering', skills: ['Robotics', 'Automation'], location: 'Building A', initialCost: 18000, monthlyCost: 7200, compatibleMachineIds: ['m4', 'm8', 'm15'], compatibleDeviceIds: ['d3', 'd5', 'd11'] },
+  { id: 'e4', name: 'David Kim', type: 'employee', status: 'available', department: 'Operations', skills: ['Quality Control', 'Inspection'], location: 'Building C', initialCost: 10000, monthlyCost: 5200, compatibleMachineIds: ['m10'], compatibleDeviceIds: ['d1', 'd6'] },
+  { id: 'e5', name: 'Jennifer Wu', type: 'employee', status: 'available', department: 'Engineering', skills: ['Laser Cutting', 'Material Science'], location: 'Building A', initialCost: 16000, monthlyCost: 6800, compatibleMachineIds: ['m3', 'm11'], compatibleDeviceIds: ['d3', 'd7'] },
+  { id: 'e6', name: 'Robert Taylor', type: 'employee', status: 'in-use', department: 'Manufacturing', skills: ['Injection Molding', 'Tool Making'], location: 'Building B', initialCost: 14000, monthlyCost: 6200, compatibleMachineIds: ['m5', 'm9', 'm12'], compatibleDeviceIds: ['d1'] },
+  { id: 'e7', name: 'Lisa Anderson', type: 'employee', status: 'available', department: 'Engineering', skills: ['CNC Programming', 'Machining'], location: 'Building C', initialCost: 17000, monthlyCost: 6900, compatibleMachineIds: ['m1', 'm6'], compatibleDeviceIds: ['d3', 'd7'] },
+  { id: 'e8', name: 'James Martinez', type: 'employee', status: 'available', department: 'Engineering', skills: ['3D Printing', 'Additive Manufacturing'], location: 'Building A', initialCost: 15500, monthlyCost: 6600, compatibleMachineIds: ['m2', 'm7'], compatibleDeviceIds: ['d3', 'd5'] },
+  { id: 'e9', name: 'Amanda White', type: 'employee', status: 'maintenance', department: 'Engineering', skills: ['Electronics Assembly', 'Testing'], location: 'Building D', initialCost: 13000, monthlyCost: 5900, compatibleMachineIds: ['m8'], compatibleDeviceIds: ['d4', 'd12'] },
+  { id: 'e10', name: 'Chris Brown', type: 'employee', status: 'available', department: 'Manufacturing', skills: ['Press Operation', 'Sheet Metal'], location: 'Building C', initialCost: 11000, monthlyCost: 5400, compatibleMachineIds: ['m9', 'm15'], compatibleDeviceIds: ['d1'] },
+  // Machines
+  { id: 'm1', name: 'CNC Machine Alpha', type: 'machines', status: 'available', location: 'Factory Floor 1', initialCost: 250000, monthlyCost: 3500, compatibleDeviceIds: ['d1', 'd3', 'd7'], compatibleEmployeeIds: ['h1', 'h7'] },
+  { id: 'm2', name: '3D Printer Pro', type: 'machines', status: 'in-use', location: 'Lab 3', initialCost: 85000, monthlyCost: 1200, compatibleDeviceIds: ['d2', 'd3', 'd10'], compatibleEmployeeIds: ['h2', 'h8'] },
+  { id: 'm3', name: 'Laser Cutter X200', type: 'machines', status: 'available', location: 'Workshop 2', initialCost: 120000, monthlyCost: 1800, compatibleDeviceIds: ['d3', 'd7'], compatibleEmployeeIds: ['h5'] },
+  { id: 'm4', name: 'Robot Arm V5', type: 'machines', status: 'available', location: 'Assembly Line A', initialCost: 180000, monthlyCost: 2400, compatibleDeviceIds: ['d3', 'd5', 'd11'], compatibleEmployeeIds: ['h3'] },
+  { id: 'm5', name: 'Injection Molder 3000', type: 'machines', status: 'maintenance', location: 'Factory Floor 2', initialCost: 320000, monthlyCost: 4200, compatibleDeviceIds: ['d1'], compatibleEmployeeIds: ['h6'] },
+  { id: 'm6', name: 'CNC Lathe Beta', type: 'machines', status: 'available', location: 'Factory Floor 1', initialCost: 190000, monthlyCost: 2800, compatibleDeviceIds: ['d3', 'd7'], compatibleEmployeeIds: ['h1', 'h7'] },
+  { id: 'm7', name: 'Metal 3D Printer', type: 'machines', status: 'in-use', location: 'Lab 2', initialCost: 450000, monthlyCost: 6500, compatibleDeviceIds: ['d3', 'd5', 'd11'], compatibleEmployeeIds: ['h2', 'h8'] },
+  { id: 'm8', name: 'PCB Assembly Machine', type: 'machines', status: 'available', location: 'Electronics Lab', initialCost: 275000, monthlyCost: 3800, compatibleDeviceIds: ['d4', 'd12'], compatibleEmployeeIds: ['h9'] },
+  { id: 'm9', name: 'Hydraulic Press H500', type: 'machines', status: 'available', location: 'Factory Floor 2', initialCost: 380000, monthlyCost: 4800, compatibleDeviceIds: ['d1'], compatibleEmployeeIds: ['h6', 'h10'] },
+  { id: 'm10', name: 'Coordinate Measuring Machine', type: 'machines', status: 'available', location: 'Quality Lab', initialCost: 155000, monthlyCost: 2100, compatibleDeviceIds: ['d1', 'd6'], compatibleEmployeeIds: ['h4'] },
+  { id: 'm11', name: 'Waterjet Cutter', type: 'machines', status: 'in-use', location: 'Workshop 3', initialCost: 210000, monthlyCost: 3200, compatibleDeviceIds: ['d3', 'd7'], compatibleEmployeeIds: ['h5'] },
+  { id: 'm12', name: 'Powder Coating Booth', type: 'machines', status: 'available', location: 'Finishing Area', initialCost: 95000, monthlyCost: 1400, compatibleDeviceIds: ['d1'], compatibleEmployeeIds: ['h6'] },
+  { id: 'm13', name: 'Wire EDM System', type: 'machines', status: 'available', location: 'Precision Shop', initialCost: 265000, monthlyCost: 3600, compatibleDeviceIds: ['d3', 'd7'], compatibleEmployeeIds: ['h1'] },
+  { id: 'm14', name: 'Industrial Oven XL', type: 'machines', status: 'maintenance', location: 'Heat Treatment', initialCost: 78000, monthlyCost: 1100, compatibleDeviceIds: ['d1'], compatibleEmployeeIds: ['h6'] },
+  { id: 'm15', name: 'Servo Press SP200', type: 'machines', status: 'available', location: 'Assembly Line B', initialCost: 145000, monthlyCost: 2000, compatibleDeviceIds: ['d1'], compatibleEmployeeIds: ['h3', 'h10'] },
+  // Devices
+  { id: 'd1', name: 'iPad Pro 12.9"', type: 'devices', status: 'available', department: 'IT Pool', initialCost: 1200, monthlyCost: 50, compatibleMachineIds: ['m1', 'm5', 'm9', 'm10', 'm12', 'm14', 'm15'], compatibleEmployeeIds: ['h1', 'h4', 'h6', 'h10'] },
+  { id: 'd2', name: 'Surface Laptop Studio', type: 'devices', status: 'in-use', department: 'Design Team', initialCost: 2800, monthlyCost: 100, compatibleMachineIds: ['m2'], compatibleEmployeeIds: ['h2'] },
+  { id: 'd3', name: 'MacBook Pro 16"', type: 'devices', status: 'available', department: 'Engineering', initialCost: 3500, monthlyCost: 120, compatibleMachineIds: ['m1', 'm2', 'm3', 'm4', 'm6', 'm7', 'm11', 'm13'], compatibleEmployeeIds: ['h1', 'h2', 'h3', 'h5', 'h7', 'h8'] },
+  { id: 'd4', name: 'iPhone 15 Pro', type: 'devices', status: 'available', department: 'IT Pool', initialCost: 1100, monthlyCost: 45, compatibleMachineIds: ['m8'], compatibleEmployeeIds: ['h9'] },
+  { id: 'd5', name: 'Dell XPS 15', type: 'devices', status: 'in-use', department: 'Engineering', initialCost: 2600, monthlyCost: 95, compatibleMachineIds: ['m4', 'm7'], compatibleEmployeeIds: ['h3', 'h8'] },
+  { id: 'd6', name: 'Samsung Galaxy Tab S9', type: 'devices', status: 'available', department: 'Sales Team', initialCost: 900, monthlyCost: 40, compatibleMachineIds: ['m10'], compatibleEmployeeIds: ['h4'] },
+  { id: 'd7', name: 'ThinkPad X1 Carbon', type: 'devices', status: 'available', department: 'IT Pool', initialCost: 2200, monthlyCost: 85, compatibleMachineIds: ['m1', 'm3', 'm6', 'm11', 'm13'], compatibleEmployeeIds: ['h1', 'h5', 'h7'] },
+  { id: 'd8', name: 'Meta Quest Pro', type: 'devices', status: 'maintenance', department: 'R&D Lab', initialCost: 1500, monthlyCost: 60, compatibleMachineIds: [], compatibleEmployeeIds: [] },
+  { id: 'd9', name: 'Steam Deck', type: 'devices', status: 'available', department: 'QA Testing', initialCost: 650, monthlyCost: 30, compatibleMachineIds: [], compatibleEmployeeIds: [] },
+  { id: 'd10', name: 'Wacom Cintiq Pro 27', type: 'devices', status: 'in-use', department: 'Design Team', initialCost: 3200, monthlyCost: 110, compatibleMachineIds: ['m2'], compatibleEmployeeIds: ['h2'] },
+  { id: 'd11', name: 'HP Z2 Tower', type: 'devices', status: 'available', department: 'Engineering', initialCost: 4500, monthlyCost: 150, compatibleMachineIds: ['m4', 'm7'], compatibleEmployeeIds: ['h3'] },
+  { id: 'd12', name: 'Pixel 8 Pro', type: 'devices', status: 'available', department: 'IT Pool', initialCost: 950, monthlyCost: 42, compatibleMachineIds: ['m8'], compatibleEmployeeIds: ['h9'] }
+];
