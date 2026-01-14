@@ -12,6 +12,8 @@ import * as Tooltip from '@radix-ui/react-tooltip';
 import { mockResources } from './components/mockResources';
 import { Resource } from './Type';
 
+import { useState as useReactState } from 'react';
+
 export default function App() {
   const [currentView, setCurrentView] = useState<'resources' | 'sets' | 'auto-sets'>('resources');
   const [selectedTypes, setSelectedTypes] = useState<string[]>(['all']);
@@ -20,6 +22,7 @@ export default function App() {
   const [advancedFilters, setAdvancedFilters] = useState<AdvancedFilter[]>([]);
   const [resourceSets, setResourceSets] = useState<ResourceSet[]>([]);
   const [drillDownResource, setDrillDownResource] = useState<Resource | null>(null);
+  const [isAdvancedFiltersOpen, setIsAdvancedFiltersOpen] = useReactState(false);
 
   const handleTypeToggle = (type: string) => {
     if (type === 'all') {
@@ -159,12 +162,15 @@ export default function App() {
                 onTypeToggle={handleTypeToggle}
                 searchQuery={searchQuery}
                 onSearchChange={setSearchQuery}
+                shrinkResourceType={isAdvancedFiltersOpen}
                 advancedFilters={
                   <AdvancedFilters
                     resources={mockResources}
                     filters={advancedFilters}
                     onFiltersChange={setAdvancedFilters}
                     currentResourceType={currentResourceType}
+                    isExpanded={isAdvancedFiltersOpen}
+                    setIsExpanded={setIsAdvancedFiltersOpen}
                   />
                 }
               />

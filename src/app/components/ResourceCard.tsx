@@ -297,7 +297,7 @@ export function ResourceCard({ resource, isSelected, onSelect, onDrillDown, allR
           </div>
           <button
             onClick={() => onDrillDown(resource)}
-            className={`p-2 rounded-lg transition-colors ${typeColors.bg} ${typeColors.hover} hover:text-white flex-shrink-0 ml-2`}
+            className="p-2 rounded-lg transition-colors bg-muted text-[var(--navy)] hover:bg-[var(--mint)] hover:text-white flex-shrink-0 ml-2"
             title="View compatibility details"
           >
             <Eye className="w-4 h-4" />
@@ -322,48 +322,6 @@ export function ResourceCard({ resource, isSelected, onSelect, onDrillDown, allR
         </div>
       </div>
 
-      {/* Compatibility Badges */}
-      {badges.length > 0 && (
-        <div className="px-5 pb-3">
-          <div className="flex flex-wrap gap-2">
-            {badges.map((badge) => {
-              const badgeTypeColors = badge.type === 'employees' 
-                ? { bg: 'bg-[var(--employee-bg)]', color: 'text-[var(--employee-color)]' }
-                : badge.type === 'machines'
-                ? { bg: 'bg-[var(--machine-bg)]', color: 'text-[var(--machine-color)]' }
-                : { bg: 'bg-[var(--device-bg)]', color: 'text-[var(--device-color)]' };
-
-              return (
-                <Popover.Root
-                  key={badge.key}
-                  open={openPopover === badge.key}
-                  onOpenChange={(open) => setOpenPopover(open ? badge.key : null)}
-                >
-                  <Popover.Trigger asChild>
-                    <button className={`flex items-center gap-1.5 px-2.5 py-1.5 ${badgeTypeColors.bg} hover:opacity-80 rounded-lg transition-opacity border border-transparent`}>
-                      <div className={badgeTypeColors.color}>{badge.icon}</div>
-                      <span className={`text-xs ${badgeTypeColors.color}`}>{badge.label}</span>
-                      <span className="text-xs text-muted-foreground">·</span>
-                      <span className={`text-xs ${badgeTypeColors.color} font-medium`}>{badge.count}</span>
-                    </button>
-                  </Popover.Trigger>
-                  <Popover.Portal>
-                    <Popover.Content
-                      className="bg-white rounded-xl shadow-lg border border-border p-3 z-50 animate-in fade-in-0 zoom-in-95"
-                      sideOffset={5}
-                      collisionPadding={10}
-                    >
-                      {renderPopoverContent(badge)}
-                      <Popover.Arrow className="fill-white" />
-                    </Popover.Content>
-                  </Popover.Portal>
-                </Popover.Root>
-              );
-            })}
-          </div>
-        </div>
-      )}
-
       {/* Meta Information */}
       <div className="px-5 pb-3 space-y-2">
         {resource.department && (
@@ -380,23 +338,48 @@ export function ResourceCard({ resource, isSelected, onSelect, onDrillDown, allR
           </div>
         )}
 
-        {resource.skills && resource.skills.length > 0 && (
-          <div className="pt-2 border-t border-border">
-            <span className="text-xs text-muted-foreground block mb-2">Skills</span>
-            <div className="flex flex-wrap gap-1">
-              {resource.skills.slice(0, 3).map((skill, idx) => (
-                <span key={idx} className="text-xs px-2 py-1 bg-muted rounded-md text-[var(--navy)]">
-                  {skill}
-                </span>
-              ))}
-              {resource.skills.length > 3 && (
-                <span className="text-xs px-2 py-1 bg-muted rounded-md text-muted-foreground">
-                  +{resource.skills.length - 3} more
-                </span>
-              )}
-            </div>
+        <div className="pt-2 border-t border-border">
+          <span className="text-xs text-muted-foreground block mb-2">Compatibility</span>
+          <div className="flex flex-wrap gap-1 min-h-[2.25rem] items-center">
+            {badges.length > 0 ? (
+              badges.map((badge) => {
+                const badgeTypeColors = badge.type === 'employees' 
+                  ? { bg: 'bg-[var(--employee-bg)]', color: 'text-[var(--employee-color)]' }
+                  : badge.type === 'machines'
+                  ? { bg: 'bg-[var(--machine-bg)]', color: 'text-[var(--machine-color)]' }
+                  : { bg: 'bg-[var(--device-bg)]', color: 'text-[var(--device-color)]' };
+                return (
+                  <Popover.Root
+                    key={badge.key}
+                    open={openPopover === badge.key}
+                    onOpenChange={(open) => setOpenPopover(open ? badge.key : null)}
+                  >
+                    <Popover.Trigger asChild>
+                      <span className={`flex items-center gap-1.5 px-2.5 py-1.5 ${badgeTypeColors.bg} hover:opacity-80 rounded-lg transition-opacity border border-transparent cursor-pointer`}>
+                        <span className={badgeTypeColors.color}>{badge.icon}</span>
+                        <span className={`text-xs ${badgeTypeColors.color}`}>{badge.label}</span>
+                        <span className="text-xs text-muted-foreground">·</span>
+                        <span className={`text-xs ${badgeTypeColors.color} font-medium`}>{badge.count}</span>
+                      </span>
+                    </Popover.Trigger>
+                    <Popover.Portal>
+                      <Popover.Content
+                        className="bg-white rounded-xl shadow-lg border border-border p-3 z-50 animate-in fade-in-0 zoom-in-95"
+                        sideOffset={5}
+                        collisionPadding={10}
+                      >
+                        {renderPopoverContent(badge)}
+                        <Popover.Arrow className="fill-white" />
+                      </Popover.Content>
+                    </Popover.Portal>
+                  </Popover.Root>
+                );
+              })
+            ) : (
+              <span className="text-xs text-muted-foreground px-2 py-1 bg-muted rounded-md">None</span>
+            )}
           </div>
-        )}
+        </div>
       </div>
 
       {/* Footer with Actions */}

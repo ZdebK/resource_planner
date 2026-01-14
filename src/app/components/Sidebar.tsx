@@ -7,9 +7,10 @@ interface SidebarProps {
   searchQuery: string;
   onSearchChange: (query: string) => void;
   advancedFilters?: ReactNode;
+  shrinkResourceType?: boolean;
 }
 
-export function Sidebar({ selectedTypes, onTypeToggle, searchQuery, onSearchChange, advancedFilters }: SidebarProps) {
+export function Sidebar({ selectedTypes, onTypeToggle, searchQuery, onSearchChange, advancedFilters, shrinkResourceType }: SidebarProps) {
   const resourceTypes = [
     { 
       id: 'all', 
@@ -62,10 +63,12 @@ export function Sidebar({ selectedTypes, onTypeToggle, searchQuery, onSearchChan
       </div>
 
       <div className="flex-1 overflow-y-auto p-6">
-        <div className="space-y-2">
+        <div className={`space-y-2 transition-all duration-300 ${shrinkResourceType ? 'scale-95 opacity-60' : ''}`}>
           <h3 className="text-sm text-muted-foreground mb-3">Resource Type</h3>
           {resourceTypes.map(type => {
             const isSelected = selectedTypes.includes(type.id);
+            // If shrinkResourceType is true, only show the selected type
+            if (shrinkResourceType && !isSelected) return null;
             return (
               <button
                 key={type.id}

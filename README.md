@@ -1,7 +1,42 @@
+
 # Resource Planner
 
 ## Wprowadzenie
-Aplikacja frontendowa do zarządzania i dopasowywania zasobów: maszyn, urządzeń peryferyjnych oraz ludzi. Projekt bez backendu, dane są zahardkodowane lub losowane.
+Aplikacja frontendowa do zarządzania i dopasowywania zasobów: maszyn, urządzeń peryferyjnych oraz ludzi. Projekt nie wymaga backendu – dane są zahardkodowane lub generowane losowo. Pozwala na szybkie budowanie zestawów zasobów, analizę kosztów oraz sprawdzanie kompatybilności.
+
+## Opis aplikacji
+Aplikacja umożliwia:
+- Przeglądanie zasobów według kategorii (maszyny, urządzenia, ludzie)
+- Filtrowanie zasobów według kompatybilności i umiejętności
+- Tworzenie zestawów zasobów (Resource Set) i ich zapisywanie
+- Automatyczne generowanie kompatybilnych zestawów
+- Zaawansowane filtrowanie (AND/OR) dla relacji między zasobami
+- Podgląd szczegółów zasobu oraz zestawu
+- Analizę kosztów (początkowy/miesięczny) dla pojedynczych zasobów i całych zestawów
+- Intuicyjny interfejs z panelami bocznymi, dialogami i responsywną siatką kart
+
+### Przykładowe widoki
+
+Poniżej przykładowe zrzuty ekranu z aplikacji (znajdują się w folderze `public/`):
+
+#### Widok główny
+![Widok główny](public/HOW%20APP%20LOOKS%20LIKE.png)
+
+#### Zaawansowane filtry
+![Advanced Filters](public/Advanced%20FILTER.png)
+![Advanced Filters z Resource Set](public/Advanced%20FILTER%20with%20RESOURCE%20SET.png)
+
+#### Zestawy zasobów
+![Zestawy kompatybilne](public/COMPATIBILE_SETS.png)
+![Zapisane zestawy](public/SAVED%20SETS.png)
+
+#### Dialog szczegółów
+![Dialog szczegółów](public/EYE%20DIALOG.png)
+
+#### Logo
+![Logo](public/logo_resource.png)
+
+---
 
 ## Wymagania funkcjonalne
 - Prezentacja trzech typów zasobów:

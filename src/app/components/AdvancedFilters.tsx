@@ -16,8 +16,7 @@ interface AdvancedFiltersProps {
   currentResourceType: string;
 }
 
-export function AdvancedFilters({ resources, filters, onFiltersChange, currentResourceType }: AdvancedFiltersProps) {
-  const [isExpanded, setIsExpanded] = useState(false);
+export function AdvancedFilters({ resources, filters, onFiltersChange, currentResourceType, isExpanded, setIsExpanded }: AdvancedFiltersProps & { isExpanded: boolean, setIsExpanded: (v: boolean) => void }) {
 
   const getFilterableResources = (type: 'machine' | 'device' | 'employee') => {
     const typeMap = {
@@ -95,6 +94,7 @@ export function AdvancedFilters({ resources, filters, onFiltersChange, currentRe
       <button
         onClick={() => setIsExpanded(!isExpanded)}
         className="w-full flex items-center justify-between p-4 hover:bg-muted/50 transition-colors"
+        aria-expanded={isExpanded}
       >
         <div className="flex items-center gap-2">
           <span className="text-sm text-[var(--navy)]">Advanced Filters</span>
