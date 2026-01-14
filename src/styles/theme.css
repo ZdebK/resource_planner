@@ -48,6 +48,14 @@
   --mint-light: #6ee7b7;
   --mint-dark: #059669;
   --mint-subtle: #d1fae5;
+  
+  /* Resource type colors */
+  --employee-bg: #dbeafe;
+  --employee-color: #1e40af;
+  --machine-bg: #fae8ff;
+  --machine-color: #a21caf;
+  --device-bg: #cffafe;
+  --device-color: #0e7490;
 }
 
 .dark {
@@ -135,6 +143,14 @@
   --color-mint-light: var(--mint-light);
   --color-mint-dark: var(--mint-dark);
   --color-mint-subtle: var(--mint-subtle);
+  
+  /* Resource type colors */
+  --color-employee-bg: var(--employee-bg);
+  --color-employee-color: var(--employee-color);
+  --color-machine-bg: var(--machine-bg);
+  --color-machine-color: var(--machine-color);
+  --color-device-bg: var(--device-bg);
+  --color-device-color: var(--device-color);
 }
 
 @layer base {

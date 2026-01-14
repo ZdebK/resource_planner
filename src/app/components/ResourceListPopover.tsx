@@ -1,7 +1,7 @@
 
 import { ReactNode } from "react";
-import { Popover, PopoverTrigger, PopoverContent } from "./ui/popover";
-import { Badge } from "./ui/badge";
+import { Popover, PopoverTrigger, PopoverContent } from "./ui/Popover";
+import { Badge } from "./ui/Badge";
  import { Resource, resourceTypeMeta } from "../Type";
 import { cn } from "./ui/utils";
 

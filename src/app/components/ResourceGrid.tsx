@@ -4,10 +4,11 @@ interface ResourceGridProps {
   resources: Resource[];
   selectedResources: string[];
   onSelectResource: (id: string) => void;
+  onDrillDown: (resource: Resource) => void;
   allResources: Resource[];
 }
 
-export function ResourceGrid({ resources, selectedResources, onSelectResource, allResources }: ResourceGridProps) {
+export function ResourceGrid({ resources, selectedResources, onSelectResource, onDrillDown, allResources }: ResourceGridProps) {
   if (resources.length === 0) {
     return (
       <div className="flex-1 flex items-center justify-center">
@@ -27,6 +28,7 @@ export function ResourceGrid({ resources, selectedResources, onSelectResource, a
           resource={resource}
           isSelected={selectedResources.includes(resource.id)}
           onSelect={onSelectResource}
+          onDrillDown={onDrillDown}
           allResources={allResources}
         />
       ))}

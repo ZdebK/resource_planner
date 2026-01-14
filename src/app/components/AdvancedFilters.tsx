@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { ChevronDown, ChevronUp, X, User, Cpu, Smartphone } from 'lucide-react';
-import { Resource } from '../Type';
-
+import { Resource } from './ResourceCard';
 
 export interface AdvancedFilter {
   id: string;
@@ -24,7 +23,7 @@ export function AdvancedFilters({ resources, filters, onFiltersChange, currentRe
     const typeMap = {
       machine: 'machines',
       device: 'devices',
-      employee: 'employee'
+      employee: 'employees'
     };
     return resources.filter(r => r.type === typeMap[type]);
   };
@@ -65,6 +64,17 @@ export function AdvancedFilters({ resources, filters, onFiltersChange, currentRe
     }
   };
 
+  const getFilterLabel = () => {
+    if (currentResourceType === 'all' || currentResourceType === 'machines') {
+      return 'Filter machines by compatible devices/operators';
+    } else if (currentResourceType === 'devices') {
+      return 'Filter devices by compatible machines/operators';
+    } else if (currentResourceType === 'employees') {
+      return 'Filter people by machines/devices they can operate';
+    }
+    return 'Advanced filters';
+  };
+
   const getAvailableFilterTypes = (): Array<'machine' | 'device' | 'employee'> => {
     if (currentResourceType === 'all') {
       return ['machine', 'device', 'employee'];
@@ -72,7 +82,7 @@ export function AdvancedFilters({ resources, filters, onFiltersChange, currentRe
       return ['device', 'employee'];
     } else if (currentResourceType === 'devices') {
       return ['machine', 'employee'];
-    } else if (currentResourceType === 'employee') {
+    } else if (currentResourceType === 'employees') {
       return ['machine', 'device'];
     }
     return [];
@@ -99,6 +109,7 @@ export function AdvancedFilters({ resources, filters, onFiltersChange, currentRe
 
       {isExpanded && (
         <div className="p-4 border-t border-border space-y-4">
+          <p className="text-xs text-muted-foreground">{getFilterLabel()}</p>
 
           {/* Active Filters */}
           {filters.length > 0 && (
@@ -138,6 +149,7 @@ export function AdvancedFilters({ resources, filters, onFiltersChange, currentRe
 
           {/* Add New Filters */}
           <div className="space-y-3">
+            <h4 className="text-xs text-muted-foreground">Add Filter</h4>
             {availableTypes.map(type => {
               const filterableResources = getFilterableResources(type);
               if (filterableResources.length === 0) return null;
@@ -146,7 +158,7 @@ export function AdvancedFilters({ resources, filters, onFiltersChange, currentRe
                 <div key={type} className="space-y-2">
                   <div className="flex items-center gap-2">
                     <div className="text-[var(--navy)]">{getIcon(type)}</div>
-                    <label className="text-sm text-[var(--navy)] capitalize">{type === 'employee' ? 'Employees' : type + 's'}</label>
+                    <label className="text-sm text-[var(--navy)] capitalize">{type}s</label>
                   </div>
                   <select
                     onChange={(e) => {
@@ -157,7 +169,7 @@ export function AdvancedFilters({ resources, filters, onFiltersChange, currentRe
                     }}
                     className="w-full px-3 py-2 bg-input-background border border-border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[var(--mint)]"
                   >
-                    <option value="">Select a {type === 'employee' ? 'employee' : type}...</option>
+                    <option value="">Select a {type}...</option>
                     {filterableResources.map(resource => (
                       <option key={resource.id} value={resource.id}>
                         {resource.name}

@@ -1,16 +1,17 @@
-import { X, User, Cpu, Smartphone, Save, Share2 } from 'lucide-react';
+import { X, User, Cpu, Smartphone, Save, Share2, DollarSign } from 'lucide-react';
 import { Resource } from '../Type';
 
 interface AllocationPanelProps {
   selectedResources: Resource[];
   onRemoveResource: (id: string) => void;
   onClearAll: () => void;
+  onSaveSet: () => void;
 }
 
-export function AllocationPanel({ selectedResources, onRemoveResource, onClearAll }: AllocationPanelProps) {
+export function AllocationPanel({ selectedResources, onRemoveResource, onClearAll, onSaveSet }: AllocationPanelProps) {
   const getIcon = (type: string) => {
     switch (type) {
-      case 'employee':
+      case 'employees':
         return <User className="w-4 h-4" />;
       case 'machines':
         return <Cpu className="w-4 h-4" />;
@@ -19,11 +20,23 @@ export function AllocationPanel({ selectedResources, onRemoveResource, onClearAl
     }
   };
 
+  const formatCurrency = (amount: number) => {
+    return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0 }).format(amount);
+  };
+
+  const calculateTotalCosts = () => {
+    const totalInitial = selectedResources.reduce((sum, r) => sum + r.initialCost, 0);
+    const totalMonthly = selectedResources.reduce((sum, r) => sum + r.monthlyCost, 0);
+    return { totalInitial, totalMonthly };
+  };
+
   const groupedResources = {
-    employee: selectedResources.filter(r => r.type === 'employee'),
+    employees: selectedResources.filter(r => r.type === 'employees'),
     machines: selectedResources.filter(r => r.type === 'machines'),
     devices: selectedResources.filter(r => r.type === 'devices')
   };
+
+  const costs = calculateTotalCosts();
 
   return (
     <div className="w-96 bg-white border-l-2 border-border flex flex-col shadow-lg">
@@ -36,6 +49,25 @@ export function AllocationPanel({ selectedResources, onRemoveResource, onClearAl
         </div>
         <p className="text-xs text-muted-foreground">Build your allocation set</p>
       </div>
+
+      {selectedResources.length > 0 && (
+        <div className="p-6 border-b border-border">
+          <div className="bg-muted/50 rounded-lg p-3 space-y-2">
+            <div className="flex items-center gap-2 mb-2">
+              <DollarSign className="w-4 h-4 text-[var(--navy)]" />
+              <span className="text-xs text-[var(--navy)] font-medium">Total Costs</span>
+            </div>
+            <div className="flex items-center justify-between">
+              <span className="text-xs text-muted-foreground">Upfront</span>
+              <span className="text-sm text-[var(--navy)] font-semibold">{formatCurrency(costs.totalInitial)}</span>
+            </div>
+            <div className="flex items-center justify-between">
+              <span className="text-xs text-muted-foreground">Monthly</span>
+              <span className="text-sm text-muted-foreground">{formatCurrency(costs.totalMonthly)}</span>
+            </div>
+          </div>
+        </div>
+      )}
 
       <div className="flex-1 overflow-y-auto p-6">
         {selectedResources.length === 0 ? (
@@ -66,13 +98,13 @@ export function AllocationPanel({ selectedResources, onRemoveResource, onClearAl
                         key={resource.id}
                         className="flex items-center justify-between p-3 bg-muted rounded-lg hover:bg-accent transition-colors"
                       >
-                        <div className="flex-1">
-                          <p className="text-sm text-[var(--navy)]">{resource.name}</p>
-                          <p className="text-xs text-muted-foreground">{resource.department || resource.location}</p>
+                        <div className="flex-1 min-w-0">
+                          <p className="text-sm text-[var(--navy)] truncate">{resource.name}</p>
+                          <p className="text-xs text-muted-foreground truncate">{resource.department || resource.location}</p>
                         </div>
                         <button
                           onClick={() => onRemoveResource(resource.id)}
-                          className="p-1 hover:bg-red-100 rounded transition-colors"
+                          className="p-1 hover:bg-red-100 rounded transition-colors flex-shrink-0 ml-2"
                         >
                           <X className="w-4 h-4 text-red-600" />
                         </button>
@@ -88,7 +120,10 @@ export function AllocationPanel({ selectedResources, onRemoveResource, onClearAl
 
       {selectedResources.length > 0 && (
         <div className="p-6 border-t border-border space-y-3">
-          <button className="w-full bg-[var(--navy)] text-white py-3 rounded-lg hover:bg-[var(--navy-light)] transition-colors flex items-center justify-center gap-2">
+          <button
+            onClick={onSaveSet}
+            className="w-full bg-[var(--navy)] text-white py-3 rounded-lg hover:bg-[var(--navy-light)] transition-colors flex items-center justify-center gap-2"
+          >
             <Save className="w-4 h-4" />
             <span>Save Resource Set</span>
           </button>

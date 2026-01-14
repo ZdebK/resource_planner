@@ -1,5 +1,4 @@
-import { Filter, Search } from 'lucide-react';
-import { resourceTypeMeta, ResourceTypeId } from '../Type';
+import { Filter, Search, User, Cpu, Smartphone, Grid3x3 } from 'lucide-react';
 import { ReactNode } from 'react';
 
 interface SidebarProps {
@@ -11,12 +10,35 @@ interface SidebarProps {
 }
 
 export function Sidebar({ selectedTypes, onTypeToggle, searchQuery, onSearchChange, advancedFilters }: SidebarProps) {
-  // Wspólna meta-informacja o typach zasobów + liczności
   const resourceTypes = [
-    { ...resourceTypeMeta.all, count: 45 },
-    { ...resourceTypeMeta.employee, count: 18 },
-    { ...resourceTypeMeta.machines, count: 15 },
-    { ...resourceTypeMeta.devices, count: 12 },
+    { 
+      id: 'all', 
+      label: 'All Resources', 
+      icon: <Grid3x3 className="w-4 h-4" />,
+      bg: 'bg-muted',
+      color: 'text-[var(--navy)]'
+    },
+    { 
+      id: 'employees', 
+      label: 'Employees', 
+      icon: <User className="w-4 h-4" />,
+      bg: 'bg-[var(--employee-bg)]',
+      color: 'text-[var(--employee-color)]'
+    },
+    { 
+      id: 'machines', 
+      label: 'Machines', 
+      icon: <Cpu className="w-4 h-4" />,
+      bg: 'bg-[var(--machine-bg)]',
+      color: 'text-[var(--machine-color)]'
+    },
+    { 
+      id: 'devices', 
+      label: 'Devices', 
+      icon: <Smartphone className="w-4 h-4" />,
+      bg: 'bg-[var(--device-bg)]',
+      color: 'text-[var(--device-color)]'
+    }
   ];
 
   return (
@@ -48,29 +70,26 @@ export function Sidebar({ selectedTypes, onTypeToggle, searchQuery, onSearchChan
               <button
                 key={type.id}
                 onClick={() => onTypeToggle(type.id)}
-                className={`w-full flex items-center justify-between p-3 rounded-lg transition-all ${
+                className={`w-full flex items-center gap-3 p-3 rounded-lg transition-all ${
                   isSelected
-                    ? 'bg-[var(--mint-subtle)] border border-[var(--mint)] text-[var(--navy)]'
+                    ? 'bg-[var(--mint-subtle)] border border-[var(--mint)]'
                     : 'bg-muted hover:bg-accent border border-transparent'
                 }`}
               >
-                <span className="flex items-center gap-2">
-                  {type.icon && (
-                    <span className={`p-1 rounded ${type.bg} ${type.iconColor}`}>{type.icon}</span>
-                  )}
-                  <span className="text-sm">{type.label}</span>
-                </span>
-                <span className={`text-xs px-2 py-1 rounded-full ${
-                  isSelected ? 'bg-[var(--mint)] text-white' : 'bg-white text-muted-foreground'
-                }`}>
-                  {type.count}
+                <div className={`p-1.5 rounded ${type.bg}`}>
+                  <div className={type.color}>
+                    {type.icon}
+                  </div>
+                </div>
+                <span className={`text-sm flex-1 text-left ${isSelected ? 'text-[var(--navy)] font-medium' : 'text-[var(--navy)]'}`}>
+                  {type.label}
                 </span>
               </button>
             );
           })}
         </div>
 
-        {/* Advanced Filters Section */}
+        {/* Advanced Filters Section - Always Visible */}
         {advancedFilters && (
           <div className="mt-6">
             {advancedFilters}

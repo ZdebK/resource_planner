@@ -47,7 +47,7 @@ export const resourceTypeMeta: Record<ResourceTypeId, ResourceTypeMeta> = {
 export interface Resource {
   id: string;
   name: string;
-  type: 'employee' | 'machines' | 'devices';
+  type: 'employees' | 'machines' | 'devices';
   status: 'available' | 'in-use' | 'maintenance';
   department?: string;
   skills?: string[];
