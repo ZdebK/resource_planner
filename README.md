@@ -33,9 +33,6 @@ Poniżej przykładowe zrzuty ekranu z aplikacji (znajdują się w folderze `publ
 #### Dialog szczegółów
 ![Dialog szczegółów](public/EYE%20DIALOG.png)
 
-#### Logo
-![Logo](public/logo_resource.png)
-
 ---
 
 ## Wymagania funkcjonalne
@@ -72,9 +69,12 @@ Poniżej przykładowe zrzuty ekranu z aplikacji (znajdują się w folderze `publ
 - Angular lub React (do wyboru)
 
 
-## Licencje
 
-This project Includes photos from [Unsplash](https://unsplash.com) used under [license](https://unsplash.com/license).
+## Licencja i prawa autorskie
+
+Projekt stworzony przez Katarzyna Elżbieciak © 2026. Wszelkie prawa zastrzeżone.
+
+Kod, projekt graficzny oraz całość aplikacji podlegają ochronie prawnej. Kopiowanie, rozpowszechnianie, modyfikowanie lub wykorzystywanie w celach komercyjnych bez pisemnej zgody autora jest zabronione.
+
+This project includes photos from [Unsplash](https://unsplash.com) used under [license](https://unsplash.com/license).
 and components from [shadcn/ui](https://ui.shadcn.com/) used under [MIT license](https://github.com/shadcn-ui/ui/blob/main/LICENSE.md).
----
-Ten plik README.md zawiera wymagania projektowe, do których Copilot będzie się odnosił podczas pracy nad projektem.
