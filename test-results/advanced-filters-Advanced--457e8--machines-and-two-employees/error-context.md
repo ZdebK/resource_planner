@@ -1,0 +1,127 @@
+# Page snapshot
+
+```yaml
+- generic [ref=e3]:
+  - navigation [ref=e4]:
+    - generic [ref=e5]:
+      - heading "Resource Allocator" [level=1] [ref=e9]
+      - generic [ref=e10]:
+        - button "Resources" [ref=e11]:
+          - img [ref=e12]
+          - generic [ref=e14]: Resources
+        - button "Compatible Sets" [ref=e15]:
+          - img [ref=e16]
+          - generic [ref=e18]: Compatible Sets
+        - button "Saved Sets" [ref=e19]:
+          - img [ref=e20]
+          - generic [ref=e24]: Saved Sets
+    - generic [ref=e25]:
+      - button [ref=e26]:
+        - img [ref=e27]
+      - button [ref=e30]:
+        - img [ref=e31]
+      - button "Admin User" [ref=e34]:
+        - img [ref=e36]
+        - generic [ref=e39]: Admin User
+  - generic [ref=e40]:
+    - complementary [ref=e41]:
+      - generic [ref=e42]:
+        - generic [ref=e43]:
+          - img [ref=e44]
+          - heading "Filters" [level=2] [ref=e46]
+        - generic [ref=e47]:
+          - img [ref=e48]
+          - textbox "Search resources..." [ref=e51]
+      - generic [ref=e52]:
+        - generic [ref=e53]:
+          - heading "Resource Type" [level=3] [ref=e54]
+          - button "Employees" [ref=e55]:
+            - img [ref=e58]
+            - generic [ref=e61]: Employees
+        - generic [ref=e63]:
+          - button "Advanced Filters 2 active" [expanded] [active] [ref=e64]:
+            - generic [ref=e65]:
+              - generic [ref=e66]: Advanced Filters
+              - generic [ref=e67]: 2 active
+            - img [ref=e68]
+          - generic [ref=e70]:
+            - paragraph [ref=e71]: Filter people by machines/devices they can operate
+            - generic [ref=e72]:
+              - heading "Active Filters" [level=4] [ref=e73]
+              - generic [ref=e75]:
+                - generic [ref=e76]:
+                  - img [ref=e78]
+                  - generic [ref=e81]: Robot Arm V5
+                  - generic [ref=e82]: (machines)
+                - button [ref=e83]:
+                  - img [ref=e84]
+              - generic [ref=e87]:
+                - button "AND" [ref=e90]
+                - generic [ref=e92]:
+                  - generic [ref=e93]:
+                    - img [ref=e95]
+                    - generic [ref=e98]: 3D Printer Pro
+                    - generic [ref=e99]: (machines)
+                  - button [ref=e100]:
+                    - img [ref=e101]
+            - generic [ref=e104]:
+              - heading "Add Filter" [level=4] [ref=e105]
+              - generic [ref=e106]:
+                - generic [ref=e107]:
+                  - img [ref=e109]
+                  - generic [ref=e112]: Machines
+                - combobox "Machines" [ref=e113]:
+                  - option "Select a machines..." [selected]
+                  - option "CNC Machine Alpha"
+                  - option "3D Printer Pro"
+                  - option "Laser Cutter X200"
+                  - option "Robot Arm V5"
+                  - option "Injection Molder 3000"
+                  - option "CNC Lathe Beta"
+                  - option "Metal 3D Printer"
+                  - option "PCB Assembly Machine"
+                  - option "Hydraulic Press H500"
+                  - option "Coordinate Measuring Machine"
+                  - option "Waterjet Cutter"
+                  - option "Powder Coating Booth"
+                  - option "Wire EDM System"
+                  - option "Industrial Oven XL"
+                  - option "Servo Press SP200"
+              - generic [ref=e114]:
+                - generic [ref=e115]:
+                  - img [ref=e117]
+                  - generic [ref=e119]: Devices
+                - combobox "Devices" [ref=e120]:
+                  - option "Select a devices..." [selected]
+                  - option "iPad Pro 12.9\""
+                  - option "Surface Laptop Studio"
+                  - option "MacBook Pro 16\""
+                  - option "iPhone 15 Pro"
+                  - option "Dell XPS 15"
+                  - option "Samsung Galaxy Tab S9"
+                  - option "ThinkPad X1 Carbon"
+                  - option "Meta Quest Pro"
+                  - option "Steam Deck"
+                  - option "Wacom Cintiq Pro 27"
+                  - option "HP Z2 Tower"
+                  - option "Pixel 8 Pro"
+            - button "Clear All Filters" [ref=e121]
+    - main [ref=e122]:
+      - generic [ref=e123]:
+        - generic [ref=e124]:
+          - heading "Available Resources" [level=1] [ref=e125]
+          - paragraph [ref=e126]: Select resources to build your allocation set
+        - generic [ref=e128]:
+          - paragraph [ref=e129]: No resources found
+          - paragraph [ref=e130]: Try adjusting your filters
+    - generic [ref=e131]:
+      - generic [ref=e132]:
+        - generic [ref=e133]:
+          - heading "Resource Set" [level=2] [ref=e134]
+          - generic [ref=e135]: 0 selected
+        - paragraph [ref=e136]: Build your allocation set
+      - generic [ref=e139]:
+        - img [ref=e141]
+        - paragraph [ref=e143]: No resources selected
+        - paragraph [ref=e144]: Click on resources to add them
+```

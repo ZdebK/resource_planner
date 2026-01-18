@@ -1,5 +1,5 @@
-import { X, User, Cpu, Smartphone, Save, Share2, DollarSign } from 'lucide-react';
-import { Resource } from '../Type';
+import { X, Save, Share2, DollarSign } from 'lucide-react';
+import { Resource, ResourceType, getResourceIcon } from '../Type';
 
 interface AllocationPanelProps {
   selectedResources: Resource[];
@@ -9,16 +9,6 @@ interface AllocationPanelProps {
 }
 
 export function AllocationPanel({ selectedResources, onRemoveResource, onClearAll, onSaveSet }: AllocationPanelProps) {
-  const getIcon = (type: string) => {
-    switch (type) {
-      case 'employees':
-        return <User className="w-4 h-4" />;
-      case 'machines':
-        return <Cpu className="w-4 h-4" />;
-      case 'devices':
-        return <Smartphone className="w-4 h-4" />;
-    }
-  };
 
   const formatCurrency = (amount: number) => {
     return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0 }).format(amount);
@@ -31,9 +21,10 @@ export function AllocationPanel({ selectedResources, onRemoveResource, onClearAl
   };
 
   const groupedResources = {
-    employees: selectedResources.filter(r => r.type === 'employees'),
-    machines: selectedResources.filter(r => r.type === 'machines'),
-    devices: selectedResources.filter(r => r.type === 'devices')
+    employees: selectedResources.filter(r => r.type ===  ResourceType.Employees),
+    machines: selectedResources.filter(r => r.type ===  ResourceType.Machines),
+    devices: selectedResources.filter(r => r.type === ResourceType.Devices
+    )
   };
 
   const costs = calculateTotalCosts();
@@ -88,7 +79,7 @@ export function AllocationPanel({ selectedResources, onRemoveResource, onClearAl
               return (
                 <div key={type}>
                   <h3 className="text-sm text-[var(--navy)] mb-3 flex items-center gap-2">
-                    {getIcon(type)}
+                    {getResourceIcon(ResourceType[type.charAt(0).toUpperCase() + type.slice(1) as keyof typeof ResourceType])}
                     <span className="capitalize">{type}</span>
                     <span className="text-xs text-muted-foreground">({resources.length})</span>
                   </h3>

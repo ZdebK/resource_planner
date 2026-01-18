@@ -1,22 +1,11 @@
+
 import { JSX, useState } from 'react';
 import { User, Cpu, Smartphone, Plus, Check, DollarSign, Eye } from 'lucide-react';
 import * as Popover from '@radix-ui/react-popover';
 import * as Tooltip from '@radix-ui/react-tooltip';
+import { ResourceType, Resource, getResourceIcon, getResourceTypeColors } from '../Type';
 
-export interface Resource {
-  id: string;
-  name: string;
-  type: 'employees' | 'machines' | 'devices';
-  status: 'available' | 'in-use' | 'maintenance';
-  department?: string;
-  skills?: string[];
-  location?: string;
-  initialCost: number;
-  monthlyCost: number;
-  compatibleMachineIds?: string[];
-  compatibleDeviceIds?: string[];
-  compatibleEmployeeIds?: string[];
-}
+export type { Resource };
 
 interface ResourceCardProps {
   resource: Resource;
@@ -29,45 +18,7 @@ interface ResourceCardProps {
 export function ResourceCard({ resource, isSelected, onSelect, onDrillDown, allResources }: ResourceCardProps) {
   const [openPopover, setOpenPopover] = useState<string | null>(null);
 
-  const getTypeColors = () => {
-    switch (resource.type) {
-      case 'employees':
-        return {
-          bg: 'bg-[var(--employee-bg)]',
-          color: 'text-[var(--employee-color)]',
-          icon: 'text-[var(--employee-color)]',
-          border: 'border-[var(--employee-color)]',
-          hover: 'hover:bg-[var(--employee-color)]'
-        };
-      case 'machines':
-        return {
-          bg: 'bg-[var(--machine-bg)]',
-          color: 'text-[var(--machine-color)]',
-          icon: 'text-[var(--machine-color)]',
-          border: 'border-[var(--machine-color)]',
-          hover: 'hover:bg-[var(--machine-color)]'
-        };
-      case 'devices':
-        return {
-          bg: 'bg-[var(--device-bg)]',
-          color: 'text-[var(--device-color)]',
-          icon: 'text-[var(--device-color)]',
-          border: 'border-[var(--device-color)]',
-          hover: 'hover:bg-[var(--device-color)]'
-        };
-    }
-  };
-
-  const getIcon = () => {
-    switch (resource.type) {
-      case 'employees':
-        return <User className="w-5 h-5" />;
-      case 'machines':
-        return <Cpu className="w-5 h-5" />;
-      case 'devices':
-        return <Smartphone className="w-5 h-5" />;
-    }
-  };
+  const typeColors = getResourceTypeColors(resource.type);
 
   const formatCurrency = (amount: number) => {
     return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0 }).format(amount);
@@ -80,10 +31,10 @@ export function ResourceCard({ resource, isSelected, onSelect, onDrillDown, allR
       label: string;
       count: number;
       ids: string[];
-      type: 'machines' | 'devices' | 'employees';
+      type: ResourceType;
     }> = [];
 
-    if (resource.type === 'employees') {
+    if (resource.type === ResourceType.Employees) {
       if (resource.compatibleMachineIds && resource.compatibleMachineIds.length > 0) {
         badges.push({
           key: 'machines',
@@ -91,7 +42,7 @@ export function ResourceCard({ resource, isSelected, onSelect, onDrillDown, allR
           label: 'Machines',
           count: resource.compatibleMachineIds.length,
           ids: resource.compatibleMachineIds,
-          type: 'machines'
+          type: ResourceType.Machines
         });
       }
       if (resource.compatibleDeviceIds && resource.compatibleDeviceIds.length > 0) {
@@ -101,10 +52,10 @@ export function ResourceCard({ resource, isSelected, onSelect, onDrillDown, allR
           label: 'Devices',
           count: resource.compatibleDeviceIds.length,
           ids: resource.compatibleDeviceIds,
-          type: 'devices'
+          type: ResourceType.Devices
         });
       }
-    } else if (resource.type === 'machines') {
+    } else if (resource.type === ResourceType.Machines) {
       if (resource.compatibleEmployeeIds && resource.compatibleEmployeeIds.length > 0) {
         badges.push({
           key: 'operators',
@@ -112,7 +63,7 @@ export function ResourceCard({ resource, isSelected, onSelect, onDrillDown, allR
           label: 'Operators',
           count: resource.compatibleEmployeeIds.length,
           ids: resource.compatibleEmployeeIds,
-          type: 'employees'
+          type: ResourceType.Employees
         });
       }
       if (resource.compatibleDeviceIds && resource.compatibleDeviceIds.length > 0) {
@@ -122,10 +73,10 @@ export function ResourceCard({ resource, isSelected, onSelect, onDrillDown, allR
           label: 'Devices',
           count: resource.compatibleDeviceIds.length,
           ids: resource.compatibleDeviceIds,
-          type: 'devices'
+          type:  ResourceType.Devices
         });
       }
-    } else if (resource.type === 'devices') {
+    } else if (resource.type === ResourceType.Devices) {
       if (resource.compatibleMachineIds && resource.compatibleMachineIds.length > 0) {
         badges.push({
           key: 'machines',
@@ -133,7 +84,7 @@ export function ResourceCard({ resource, isSelected, onSelect, onDrillDown, allR
           label: 'Machines',
           count: resource.compatibleMachineIds.length,
           ids: resource.compatibleMachineIds,
-          type: 'machines'
+          type:  ResourceType.Machines
         });
       }
       if (resource.compatibleEmployeeIds && resource.compatibleEmployeeIds.length > 0) {
@@ -143,7 +94,7 @@ export function ResourceCard({ resource, isSelected, onSelect, onDrillDown, allR
           label: 'Operators',
           count: resource.compatibleEmployeeIds.length,
           ids: resource.compatibleEmployeeIds,
-          type: 'employees'
+          type:  ResourceType.Employees
         });
       }
     }
@@ -244,11 +195,11 @@ export function ResourceCard({ resource, isSelected, onSelect, onDrillDown, allR
   };
 
   const renderPopoverContent = (badge: ReturnType<typeof getCompatibilityBadges>[0]) => {
-    if (badge.type === 'employees') {
+    if (badge.type === ResourceType.Employees) {
       return renderOperatorsPopover(badge.ids);
-    } else if (badge.type === 'devices') {
+    } else if (badge.type ===  ResourceType.Devices) {
       return renderDevicesPopover(badge.ids);
-    } else if (badge.type === 'machines') {
+    } else if (badge.type ===  ResourceType.Machines) {
       return renderMachinesPopover(badge.ids);
     }
     return null;
@@ -256,14 +207,13 @@ export function ResourceCard({ resource, isSelected, onSelect, onDrillDown, allR
 
   const badges = getCompatibilityBadges();
   const costLabel = resource.type === 'employees' ? 'Hiring Cost' : 'Purchase Cost';
-  const typeColors = getTypeColors();
 
   return (
     <div
       className={`bg-white rounded-xl border-2 transition-all hover:shadow-md ${
         isSelected
           ? `${typeColors.border} shadow-lg`
-          : 'border-border hover:border-[var(--mint)]/30'
+          : `border-border hover:border-[var(--mint)]/30`
       }`}
     >
       {/* Header - Resource Name and Type */}
@@ -272,7 +222,7 @@ export function ResourceCard({ resource, isSelected, onSelect, onDrillDown, allR
           <div className="flex items-center gap-3 flex-1 min-w-0">
             <div className={`p-2 rounded-lg ${typeColors.bg}`}>
               <div className={typeColors.icon}>
-                {getIcon()}
+                {getResourceIcon(resource.type)}
               </div>
             </div>
             <div className="flex-1 min-w-0">
@@ -310,7 +260,6 @@ export function ResourceCard({ resource, isSelected, onSelect, onDrillDown, allR
         <div className="bg-muted/50 rounded-lg p-3 space-y-2">
           <div className="flex items-center justify-between">
             <span className="text-xs text-muted-foreground flex items-center gap-1">
-              <DollarSign className="w-3 h-3" />
               {costLabel}
             </span>
             <span className="text-sm text-[var(--navy)] font-semibold">{formatCurrency(resource.initialCost)}</span>

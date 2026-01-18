@@ -1,6 +1,7 @@
 import { X, User, Cpu, Smartphone, Plus, ChevronRight } from 'lucide-react';
 import { Resource } from './ResourceCard';
 import * as Tooltip from '@radix-ui/react-tooltip';
+import { getResourceIcon, getResourceTypeColors, ResourceType } from '../Type';
 
 interface ResourceDrillDownProps {
   resource: Resource;
@@ -12,27 +13,7 @@ interface ResourceDrillDownProps {
 export function ResourceDrillDown({ resource, allResources, onClose, onSelectResource }: ResourceDrillDownProps) {
   const getResourceById = (id: string) => allResources.find(r => r.id === id);
 
-  const getTypeColor = (type: 'employees' | 'machines' | 'devices') => {
-    switch (type) {
-      case 'employees':
-        return { bg: 'bg-[var(--employee-bg)]', color: 'text-[var(--employee-color)]', icon: 'text-[var(--employee-color)]' };
-      case 'machines':
-        return { bg: 'bg-[var(--machine-bg)]', color: 'text-[var(--machine-color)]', icon: 'text-[var(--machine-color)]' };
-      case 'devices':
-        return { bg: 'bg-[var(--device-bg)]', color: 'text-[var(--device-color)]', icon: 'text-[var(--device-color)]' };
-    }
-  };
 
-  const getIcon = (type: 'employees' | 'machines' | 'devices') => {
-    switch (type) {
-      case 'employees':
-        return <User className="w-5 h-5" />;
-      case 'machines':
-        return <Cpu className="w-5 h-5" />;
-      case 'devices':
-        return <Smartphone className="w-5 h-5" />;
-    }
-  };
 
   const renderEmployeeDrillDown = () => {
     // Show machines they can operate and devices compatible with both
@@ -268,7 +249,7 @@ export function ResourceDrillDown({ resource, allResources, onClose, onSelectRes
     );
   };
 
-  const typeColors = getTypeColor(resource.type);
+  const typeColors = getResourceTypeColors(resource.type as ResourceType);
 
   return (
     <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
@@ -279,7 +260,7 @@ export function ResourceDrillDown({ resource, allResources, onClose, onSelectRes
             <div className="flex items-center gap-3 flex-1 min-w-0">
               <div className={`p-3 bg-white rounded-lg shadow-sm`}>
                 <div className={typeColors.icon}>
-                  {getIcon(resource.type)}
+                  {getResourceIcon(resource.type)}
                 </div>
               </div>
               <div className="flex-1 min-w-0">

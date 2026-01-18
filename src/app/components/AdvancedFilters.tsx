@@ -1,10 +1,12 @@
 import { useState } from 'react';
-import { ChevronDown, ChevronUp, X, User, Cpu, Smartphone } from 'lucide-react';
+import { ChevronDown, ChevronUp, X } from 'lucide-react';
+
 import { Resource } from './ResourceCard';
+import { getResourceIcon, ResourceType } from '../Type';
 
 export interface AdvancedFilter {
   id: string;
-  type: 'machine' | 'device' | 'employee';
+  type: ResourceType;
   resourceId: string;
   logic: 'AND' | 'OR';
 }
@@ -17,17 +19,25 @@ interface AdvancedFiltersProps {
 }
 
 export function AdvancedFilters({ resources, filters, onFiltersChange, currentResourceType, isExpanded, setIsExpanded }: AdvancedFiltersProps & { isExpanded: boolean, setIsExpanded: (v: boolean) => void }) {
-
-  const getFilterableResources = (type: 'machine' | 'device' | 'employee') => {
-    const typeMap = {
-      machine: 'machines',
-      device: 'devices',
-      employee: 'employees'
-    };
-    return resources.filter(r => r.type === typeMap[type]);
+  // Ustal wspólną logikę dla wszystkich filtrów (jeśli są, bierz z pierwszego)
+  const globalLogic = filters[0]?.logic || 'AND';
+  // Funkcja do przełączania logiki wszystkich filtrów naraz
+  const toggleGlobalLogic = () => {
+    if (filters.length < 2) return;
+    const newLogic = globalLogic === 'AND' ? 'OR' : 'AND';
+    onFiltersChange(filters.map(f => ({ ...f, logic: newLogic })));
   };
 
-  const addFilter = (type: 'machine' | 'device' | 'employee', resourceId: string) => {
+  // Funkcja do zamiany pierwszej litery na wielką
+  function toUpperFirstCase(str: string) {
+    return str.charAt(0).toUpperCase() + str.slice(1);
+  }
+
+  const getFilterableResources = (type: ResourceType) => {
+    return resources.filter(r => r.type === type);
+  };
+
+  const addFilter = (type: ResourceType, resourceId: string) => {
     const newFilter: AdvancedFilter = {
       id: `${Date.now()}-${Math.random()}`,
       type,
@@ -52,17 +62,6 @@ export function AdvancedFilters({ resources, filters, onFiltersChange, currentRe
     return resource?.name || 'Unknown';
   };
 
-  const getIcon = (type: 'machine' | 'device' | 'employee') => {
-    switch (type) {
-      case 'machine':
-        return <Cpu className="w-4 h-4" />;
-      case 'device':
-        return <Smartphone className="w-4 h-4" />;
-      case 'employee':
-        return <User className="w-4 h-4" />;
-    }
-  };
-
   const getFilterLabel = () => {
     if (currentResourceType === 'all' || currentResourceType === 'machines') {
       return 'Filter machines by compatible devices/operators';
@@ -74,17 +73,19 @@ export function AdvancedFilters({ resources, filters, onFiltersChange, currentRe
     return 'Advanced filters';
   };
 
-  const getAvailableFilterTypes = (): Array<'machine' | 'device' | 'employee'> => {
-    if (currentResourceType === 'all') {
-      return ['machine', 'device', 'employee'];
-    } else if (currentResourceType === 'machines') {
-      return ['device', 'employee'];
-    } else if (currentResourceType === 'devices') {
-      return ['machine', 'employee'];
-    } else if (currentResourceType === 'employees') {
-      return ['machine', 'device'];
+  const getAvailableFilterTypes = (): ResourceType[] => {
+    switch (currentResourceType) {
+      case 'all':
+        return [ResourceType.Machines, ResourceType.Devices, ResourceType.Employees];
+      case ResourceType.Machines:
+        return [ResourceType.Devices, ResourceType.Employees];
+      case ResourceType.Devices:
+        return [ResourceType.Machines, ResourceType.Employees];
+      case ResourceType.Employees:
+        return [ResourceType.Machines, ResourceType.Devices];
+      default:
+        return [];
     }
-    return [];
   };
 
   const availableTypes = getAvailableFilterTypes();
@@ -117,21 +118,23 @@ export function AdvancedFilters({ resources, filters, onFiltersChange, currentRe
               <h4 className="text-xs text-muted-foreground">Active Filters</h4>
               {filters.map((filter, index) => (
                 <div key={filter.id}>
-                  {index > 0 && (
+                  {index === 1 && (
                     <div className="flex items-center gap-2 my-2">
                       <div className="flex-1 h-px bg-border" />
                       <button
-                        onClick={() => toggleLogic(filter.id)}
+                        onClick={toggleGlobalLogic}
                         className="px-3 py-1 bg-[var(--navy)] text-white text-xs rounded-full hover:bg-[var(--navy-light)] transition-colors"
+                        data-testid="logic-toggle"
+                        disabled={filters.length < 2}
                       >
-                        {filter.logic}
+                        {globalLogic}
                       </button>
                       <div className="flex-1 h-px bg-border" />
                     </div>
                   )}
                   <div className="flex items-center gap-2 bg-[var(--mint-subtle)] border border-[var(--mint)] p-2 rounded-lg">
                     <div className="flex items-center gap-2 flex-1">
-                      <div className="text-[var(--mint-dark)]">{getIcon(filter.type)}</div>
+                      <div className="text-[var(--mint-dark)]">{getResourceIcon(filter.type)}</div>
                       <span className="text-sm text-[var(--navy)]">{getResourceName(filter.resourceId)}</span>
                       <span className="text-xs text-muted-foreground capitalize">({filter.type})</span>
                     </div>
@@ -157,10 +160,13 @@ export function AdvancedFilters({ resources, filters, onFiltersChange, currentRe
               return (
                 <div key={type} className="space-y-2">
                   <div className="flex items-center gap-2">
-                    <div className="text-[var(--navy)]">{getIcon(type)}</div>
-                    <label className="text-sm text-[var(--navy)] capitalize">{type}s</label>
+                    <div className="text-[var(--navy)]">{getResourceIcon(type)}</div>
+                    <label className="text-sm text-[var(--navy)]" htmlFor={`advanced-filter-select-${type}`}>
+                      {toUpperFirstCase(type)}
+                    </label>
                   </div>
                   <select
+                    id={`advanced-filter-select-${type}`}
                     onChange={(e) => {
                       if (e.target.value) {
                         addFilter(type, e.target.value);
